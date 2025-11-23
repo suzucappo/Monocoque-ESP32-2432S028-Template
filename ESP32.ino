@@ -3,11 +3,17 @@
 
 TFT_eSPI tft = TFT_eSPI();  // Invoke library, pins defined in User_Setup.h
 
+//Declare variables
+//Sets the state that determines which loop to run in the read function
 byte state = 0;
+//Gets the gear of the vehichle from gear and is used to verify if the gear has changed for updating display
 int gearcheck;
+//This variable never gets updated, it's just a placeholder for checking the rpms to set the state of the screen (redline or no)
 int rpmcheck = 0;
+//gear variable gets read in as an int then gearstate is set to whatever that is
 char gearstate[11] = {'R', 'N', '1', '2', '3', '4', '5', '6', '7', '8', '\0'};
 
+//Initialize TFT display, set the rotation of the screen and turn on serial communication
 void setup(void) {
   tft.init();
   tft.setRotation(1);
@@ -109,3 +115,4 @@ void bootscreen() {
 
 
   }
+
