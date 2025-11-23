@@ -23,11 +23,13 @@ void setup(void) {
 void read() 
 { 
   if(Serial.available()) {
-    
+
+    //Read in (set) variables from Monocoque that are coming from simdata.h in simapi
     int gear = Serial.readStringUntil(';').toInt();
     int rpms = Serial.readStringUntil(';').toInt();
     int maxrpm = Serial.readStringUntil(';').toInt();
     
+    //Create a float of the percentage towards maxrpm and convert it to an int
     float perctflt = ((float)rpms/(float)maxrpm)*100;
     int perct = round(perctflt);
 
@@ -115,4 +117,5 @@ void bootscreen() {
 
 
   }
+
 
