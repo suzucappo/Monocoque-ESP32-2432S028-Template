@@ -1,7 +1,9 @@
-#include <TFT_eSPI.h> // Graphics and font library for ST7735 driver chip
+//Graphics and font library for ST7735 driver chip
+#include <TFT_eSPI.h> 
 #include <SPI.h>
 
-TFT_eSPI tft = TFT_eSPI();  // Invoke library, pins defined in User_Setup.h
+//Invoke library, pins defined in User_Setup.h
+TFT_eSPI tft = TFT_eSPI();
 
 //Declare variables
 //Sets the state that determines which loop to run in the read function
@@ -18,6 +20,19 @@ void setup(void) {
   tft.init();
   tft.setRotation(1);
   Serial.begin(115200);
+  waitingForInput();
+}
+
+void waitingForInput(void) {
+
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextColor(TFT_PURPLE, TFT_BLACK, true);
+  tft.setTextSize(2);  
+  tft.drawString("Waiting", 80, 50, 4);
+  tft.drawString("for", 135, 100, 4);
+  tft.drawString("Input", 110, 150, 4);
+  tft.setTextSize(7);
+
 }
 
 void read() 
@@ -25,9 +40,16 @@ void read()
   if(Serial.available()) {
 
     //Read in (set) variables from Monocoque that are coming from simdata.h in simapi
-    int gear = Serial.readStringUntil(';').toInt();
-    int rpms = Serial.readStringUntil(';').toInt();
+    int gear = Serial.readStringUntil(';').toInt();    
+    int rpms = Serial.readStringUntil(';').toInt();    
     int maxrpm = Serial.readStringUntil(';').toInt();
+
+    Serial.print("\nGear: ");
+    Serial.print(gearstate[gear]);
+    Serial.print("\nRPM: ");
+    Serial.print(rpms);
+    Serial.print("\nMax RPM: ");
+    Serial.print(maxrpm);
     
     //Create a float of the percentage towards maxrpm and convert it to an int
     float perctflt = ((float)rpms/(float)maxrpm)*100;
@@ -60,7 +82,7 @@ void read()
           rpms = Serial.readStringUntil(';').toInt();
           maxrpm = Serial.readStringUntil(';').toInt();
           tft.fillScreen(TFT_BLACK);
-          tft.setTextColor(TFT_WHITE, TFT_BLACK);
+          tft.setTextColor(TFT_PURPLE, TFT_BLACK);
           tft.setTextSize(7);
           tft.drawChar(gearstate[gear], 120, 50, 4);
           tft.setTextSize(2);
@@ -85,8 +107,8 @@ void read()
           gear = Serial.readStringUntil(';').toInt();
           rpms = Serial.readStringUntil(';').toInt();
           maxrpm = Serial.readStringUntil(';').toInt();
-          tft.fillScreen(TFT_RED);
-          tft.setTextColor(TFT_BLACK, TFT_RED);
+          tft.fillScreen(TFT_PURPLE);
+          tft.setTextColor(TFT_BLACK, TFT_PURPLE);
           tft.setTextSize(7);
           tft.drawChar(gearstate[gear], 120, 50, 4);
           tft.setTextSize(2);
@@ -104,18 +126,10 @@ void read()
           break;
       }
     }    
+    
   }
 }
 
 void loop(){
   read();
 }
-
-void bootscreen() {
-
-
-
-
-  }
-
-
